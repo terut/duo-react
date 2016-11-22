@@ -1,53 +1,64 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
-import {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
+import { AppRegistry, View, Navigator, Text, TouchableOpacity } from 'react-native';
 
-export default class duo extends Component {
+import SectionList from './js/section_list';
+
+class Duo extends Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.android.js
-        </Text>
-        <Text style={styles.instructions}>
-          Double tap R on your keyboard to reload,{'\n'}
-          Shake or press menu button for dev menu
-        </Text>
-      </View>
-    );
+      <Navigator
+        initialRoute={{
+           component: SectionList,
+           passProps: {
+             title: "Duo 3.0",
+           }
+        }}
+        renderScene={(route, navigator) =>
+          <View style={{flex: 1, paddingTop: 56}}>
+            <route.component nav={navigator} {...route.passProps} />
+          </View>
+        }
+        navigationBar={
+          <Navigator.NavigationBar
+            routeMapper={{
+              LeftButton: (route, navigator, index, navState) => {
+                return (
+                  <TouchableOpacity
+                    style={{flex: 1, justifyContent: 'center'}}
+                    onPress={() => navigator.pop()}
+                    >
+                    <Text style={{color: 'white', margin: 10, fontSize: 16}}>
+                      Back
+                    </Text>
+                  </TouchableOpacity>
+                )
+              },
+              RightButton: (route, navigator, index, navState) => {
+                return null
+                // return (
+                //   <TouchableOpacity style={{flex: 1, justifyContent: 'center', backgroundColor: "blue"}}>
+                //     <Text style={{color: 'white', margin: 10, fontSize: 16}}>
+                //       Next
+                //     </Text>
+                //   </TouchableOpacity>
+                // )
+              },
+              Title: (route, navigator, index, navState) => {
+                return (
+                  <View style={{flex: 1, justifyContent: 'center'}}>
+                    <Text style={{color: 'white', margin: 10, fontSize: 16}}>
+                      Duo 3.0
+                    </Text>
+                  </View>
+                )
+              },
+            }}
+            style={{backgroundColor: "steelblue"}}
+          />
+        }
+      />
+    )
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
-
-AppRegistry.registerComponent('duo', () => duo);
+AppRegistry.registerComponent('duo', () => Duo);
