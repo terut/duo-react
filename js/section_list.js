@@ -27,16 +27,15 @@ export default class SectionList extends Component {
   // }
 
   _onPressButton(section) {
-    // const nextRoute = {
-    //   component: SentenceList,
-    //   passProps: {
-    //     title: `Section ${section.number}`,
-    //     nav: this.props.nav,
-    //     section: section,
-    //   }
-    // }
-    // this.props.nav.push(nextRoute)
-
+    const nextRoute = {
+      component: SentenceList,
+      passProps: {
+        title: `Section ${section.number}`,
+        nav: this.props.nav,
+        section: section,
+      }
+    }
+    this.props.nav.push(nextRoute)
   }
 
   _listItemView(rowData, sectionId, rowId) {

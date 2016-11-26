@@ -1,3 +1,5 @@
 rootProject.name = 'duo'
 
 include ':app'
+include ':RNSound', ':app'
+project(':RNSound').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-sound/android')

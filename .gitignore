@@ -42,4 +42,4 @@ android/keystores/debug.keystore
 
 # Project
 assets/jsons/*.json
-assets/sounds/**/*.m4a
+android/app/src/main/res/raw/*.m4a
