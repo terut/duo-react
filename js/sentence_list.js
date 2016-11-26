@@ -9,40 +9,42 @@ export default class SentenceList extends Component {
 
   constructor(props) {
     super(props);
-    const sentences = ["AAAAAAAA", "BBBBBBBB", "CCCCCCCCCCC"]
+    this.section = props.section
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
-      dataSource: ds.cloneWithRows(sentences)
+      dataSource: ds.cloneWithRows(this.section.sentences)
     }
   }
 
-  _onPressButton = () => {
+  _onPressButton(sentence) {
     const nextRoute = {
       component: SentenceView,
       passProps: {
-        title: 'Sentence',
-        nav: this.props.nav
+        title: `Sentence ${sentence.number}`,
+        nav: this.props.nav,
+        sentence: sentence,
       }
     }
     this.props.nav.push(nextRoute)
   }
 
-  _listItemView(rowData) {
+  _listItemView(rowData, sectionId, rowId) {
     let style = {
       flexDirection: 'row',
       alignItems:'center',
-      marginTop: 10,
+      marginTop: 15,
     }
-    // if(this.state.dataSource.indexOf(rowData) == (this.dataSource.size - 1)) {
-    //   style.marginBottom = 10
-    // }
+    if(rowId == this.state.dataSource.getSectionLengths(sectionId)) {
+      style.marginBottom = 15
+    }
+
     return (
-      <TouchableOpacity onPress={this._onPressButton} style={style}>
+      <TouchableOpacity onPress={() => this._onPressButton(rowData)} style={style}>
         <View style={{width:40, height: 40, justifyContent:'center', alignItems: 'center', backgroundColor: 'steelblue', marginRight: 5, marginLeft: 5, borderRadius: 20}}>
-          <Text style={{color: 'white'}}>1</Text>
+          <Text style={{color: 'white'}}>{rowData.number}</Text>
         </View>
         <View style={{flex: 1, marginLeft: 5, marginRight: 5}}>
-          <Text>AAAAAAAAAAAAAAA\\nAAAAAAAAAA\\nAAAAAAAAAAAA\\nAAAAAAAAAAAAAA\\nAAAAAAAAAAAAAA</Text>
+          <Text>{rowData.jp}</Text>
         </View>
       </TouchableOpacity>
     )
@@ -53,7 +55,7 @@ export default class SentenceList extends Component {
       <View>
         <ListView
           dataSource={this.state.dataSource}
-          renderRow={(rowData) => this._listItemView(rowData)}
+          renderRow={(rowData, sectionId, rowId) => this._listItemView(rowData, sectionId, rowId)}
         />
       </View>
     )

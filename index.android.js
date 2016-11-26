@@ -22,6 +22,9 @@ class Duo extends Component {
           <Navigator.NavigationBar
             routeMapper={{
               LeftButton: (route, navigator, index, navState) => {
+                if(index == 0) {
+                  return null
+                }
                 return (
                   <TouchableOpacity
                     style={{flex: 1, justifyContent: 'center'}}
@@ -47,7 +50,7 @@ class Duo extends Component {
                 return (
                   <View style={{flex: 1, justifyContent: 'center'}}>
                     <Text style={{color: 'white', margin: 10, fontSize: 16}}>
-                      Duo 3.0
+                      {route.passProps.title}
                     </Text>
                   </View>
                 )
