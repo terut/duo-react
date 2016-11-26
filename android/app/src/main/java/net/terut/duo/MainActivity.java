@@ -1,4 +1,4 @@
-package com.duo;
+package net.terut.duo;
 
 import com.facebook.react.ReactActivity;
 
