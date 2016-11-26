@@ -53,6 +53,7 @@ export default class SentenceView extends Component {
       flexDirection: 'column',
       padding: 10,
       flex: 1,
+      backgroundColor: 'white',
     }
 
     return (

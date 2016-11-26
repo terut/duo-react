@@ -52,7 +52,7 @@ export default class SentenceList extends Component {
 
   render() {
     return (
-      <View>
+      <View style={{flex: 1, backgroundColor: 'white'}}>
         <ListView
           dataSource={this.state.dataSource}
           renderRow={(rowData, sectionId, rowId) => this._listItemView(rowData, sectionId, rowId)}
