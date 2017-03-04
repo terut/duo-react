@@ -22,7 +22,7 @@ export default class SentenceList extends Component {
       passProps: {
         title: `Sentence ${sentence.number}`,
         nav: this.props.nav,
-        sentence: sentence,
+        sentence: sentence
       }
     }
     this.props.nav.push(nextRoute)

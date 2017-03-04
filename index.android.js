@@ -1,12 +1,23 @@
 import React, { Component } from 'react';
-import { AppRegistry, View, Navigator, Text, TouchableOpacity } from 'react-native';
+import { AppRegistry, View, Navigator, Text, TouchableOpacity, BackAndroid } from 'react-native';
 
 import SectionList from './js/section_list';
 
 class Duo extends Component {
+  componentDidMount() {
+    BackAndroid.addEventListener('hardwareBackPress', () => {
+      if(this._navigator && this._navigator.getCurrentRoutes().length > 1) {
+        this._navigator.pop()
+        return true
+      }
+      return false
+    })
+  }
+
   render() {
     return (
       <Navigator
+        ref={(navigator) => this._navigator = navigator}
         initialRoute={{
            component: SectionList,
            passProps: {

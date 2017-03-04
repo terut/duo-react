@@ -2,25 +2,33 @@ import React, { Component } from 'react';
 import { View, Text, TextInput, Button, TouchableWithoutFeedback } from 'react-native';
 import dismissKeyboard from 'dismissKeyboard';
 import Sound from 'react-native-sound'
+import * as JsDiff from 'diff'
 
 export default class SentenceView extends Component {
   constructor(props) {
     super(props)
     this.sentence = props.sentence
+    this._clearCache()
     this.state = {
-      isAnsHidden: true,
+      diff: null,
+      text: "",
       readingCount: 30,
     }
   }
 
   _onPressButton() {
-    var ansColor = "red"
-    if(this.state.text == this.sentence.en) {
-      ansColor = "green"
-    }
+    const diff = JsDiff.diffWords(this.state.text, this.sentence.en)
+    this._clearCache()
     this.setState({
-      isAnsHidden: false,
-      ansColor: ansColor,
+      diff: diff
+    })
+  }
+
+  _onPressClearButton() {
+    this._clearCache()
+    this.setState({
+      diff: null,
+      text: ""
     })
   }
 
@@ -48,6 +56,31 @@ export default class SentenceView extends Component {
     })
   }
 
+  _clearCache() {
+    this._cachedText = null
+  }
+
+  _showEn() {
+    if(!this.state.diff) {
+      return ""
+    }
+
+    if(this._cachedText) {
+      return this._cachedText
+    }
+
+    this.cachedText = this.state.diff.map((part, i) => {
+      if(part.removed) {
+        return
+      }
+      if(part.added) {
+        return <Text key={i} style={{color: "red"}}>{part.value}</Text>
+      }
+      return part.value
+    })
+    return this.cachedText
+  }
+
   render() {
     let style = {
       flexDirection: 'column',
@@ -61,14 +94,13 @@ export default class SentenceView extends Component {
         <View style={style}>
           <Text>{this.sentence.jp}</Text>
           <View style={{marginTop: 10, height: 50}}>
-            {!this.state.isAnsHidden &&
-              <Text style={{color: this.state.ansColor}}>{this.sentence.en}</Text>
-            }
+            <Text style={{color: "green"}}>{this._showEn()}</Text>
           </View>
           <TextInput
             numberOfLines={3}
             placeholder="Write the sentence."
             multiline={true}
+            value={this.state.text}
             onChangeText={(text) => this.setState({text})}
           />
           <Button
@@ -76,6 +108,12 @@ export default class SentenceView extends Component {
             title="Check"
             color="steelblue"
           />
+          <View style={{marginTop: 20}}>
+            <Button
+              onPress={() => this._onPressClearButton()}
+              title="Clear"
+            />
+          </View>
           <View style={{marginTop: 70}}>
             <Button
               onPress={() => this._onPressSoundButton()}
