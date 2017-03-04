@@ -112,6 +112,7 @@ export default class SentenceView extends Component {
             <Button
               onPress={() => this._onPressClearButton()}
               title="Clear"
+              color="grey"
             />
           </View>
           <View style={{marginTop: 70}}>
